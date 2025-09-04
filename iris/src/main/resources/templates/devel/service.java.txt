@@ -1,0 +1,16 @@
+package ${packagePrefix}.service.${moduleName};
+
+import ${packagePrefix}.model.ApiResult;
+import ${packagePrefix}.model.${moduleName}.dto.${businessName}Dto;
+import ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+public interface ${businessName}Service {
+
+    ApiResult<Void> delete(Long ${businessNameVar}Id);
+
+    Page<${businessName}Vo> getPage(Pageable pageable);
+
+    ApiResult<Void> save(${businessName}Dto ${businessNameVar}Dto);
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{mail/fragments/styles :: common_styles}"></head>
+
+<body>
+    <div class="container">
+        <h1>欢迎加入 <span th:text="${siteName}">Iris</span>！</h1>
+        <p>尊敬的用户，我们非常高兴您能加入我们。现在您可以开始探索我们的平台了。</p>
+        <p>
+            <a th:href="${dashboardUrl}" href="#">开始使用</a>
+        </p>
+        <div th:replace="~{mail/fragments/styles :: common_footer}"></div>
+    </div>
+</body>
+</html>

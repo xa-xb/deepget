@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- suppress logs for client disconnect or network errors -->
+    <logger name="org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet]" level="OFF" />
+    <!-- suppress logs related to database connection pooling -->
+    <logger name="org.hibernate.orm.connections.pooling" level="OFF" />
+</configuration>

@@ -1,0 +1,10 @@
+package ${packagePrefix}.model.${moduleName}.vo;
+
+import java.time.LocalDateTime;
+
+public record ${businessName}Vo(
+        Long id,
+        String name,
+        LocalDateTime createdAt
+) {
+}

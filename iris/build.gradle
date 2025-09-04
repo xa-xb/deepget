@@ -1,0 +1,137 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+version = '0.1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+bootJar {
+    version = null // 禁用 jar 名中版本号
+    doFirst {
+        manifest {
+            attributes(
+                    "Build-Time": LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            )
+        }
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url = 'https://mirrors.163.com/maven/repository/maven-public/' }
+    mavenCentral()
+}
+
+ext {
+    googleZxingVersion = '3.5.3'
+    langchain4jVersion = '1.4.0'
+    springDocVersion = '2.8.12'
+}
+
+dependencies {
+    // ZXing
+    implementation "com.google.zxing:core:${googleZxingVersion}"
+    implementation "com.google.zxing:javase:${googleZxingVersion}"
+
+    // Langchain4j
+    implementation "dev.langchain4j:langchain4j-open-ai:${langchain4jVersion}"
+    implementation "dev.langchain4j:langchain4j:${langchain4jVersion}"
+
+    // PostgreSQL Driver
+    implementation 'org.postgresql:postgresql'
+
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.security:spring-security-crypto'
+
+    // Devtools (only in dev mode)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // SpringDoc OpenAPI
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+
+    // Spring config processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    maxParallelForks = 1
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.incremental = true
+}
+
+tasks.register('cleanAll') {
+    description = 'Deletes build directories, Gradle caches, and logs.'
+    group = 'build'
+
+    def dirs = [
+            project.layout.buildDirectory.asFile.get(),
+            new File("${System.getProperty('user.home')}/.gradle/caches/build-cache-1"),
+            file('.gradle/configuration-cache'),
+            file('logs'),
+            file('work')
+    ]
+
+    doLast {
+        dirs.each { dir ->
+            if (dir.exists()) {
+                println "Deleting: ${dir}"
+                dir.deleteDir()
+            } else {
+                println "Not found: ${dir}"
+            }
+        }
+    }
+}
+
+tasks.register('deploy', Exec) {
+    dependsOn bootJar
+
+    /**
+     * env variables required: $env:srvUser, $env:srvHost, $env:srvPort
+     */
+    commandLine 'powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', '''
+        $remoteDir = '/opt/iris'
+        $jar = 'iris.jar'
+        
+        pwd
+        ssh -p $env:srvPort $env:srvUser@$env:srvHost "rm -f $jar"
+        if ($LASTEXITCODE -ne 0) {
+            exit 0
+        }
+        Write-Host 'Uploading JAR to remote server...'
+        scp -P $env:srvPort ./build/libs/$jar "$env:srvUser@${env:srvHost}:"
+        if ($LASTEXITCODE -ne 0) {
+            exit 0
+        }
+        Write-Host 'Restarting remote application...'
+        ssh -p $env:srvPort $env:srvUser@$env:srvHost "\\"sudo systemctl stop iris.service && mv $jar ${remoteDir} && sudo systemctl start iris.service \\""
+    '''
+}
+
+

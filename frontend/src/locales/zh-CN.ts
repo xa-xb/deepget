@@ -1,0 +1,60 @@
+export default {
+    login: {
+        title: '登录账户',
+        register: '或者',
+        registerLink: '注册新账户',
+        account: '账户',
+        accountPlaceholder: '用户名/电子邮箱',
+        password: '密码',
+        passwordPlaceholder: '请输入密码',
+        rememberMe: '记住我',
+        forgotPassword: '忘记密码？',
+        loginButton: '登录',
+        otherLogin: '或通过以下方式登录',
+        github: '使用 GitHub 登录',
+        google: '使用 Google 登录',
+        twitter: '使用 Twitter 登录',
+        errorMessage: '登录失败，请检查您的邮箱和密码',
+        loggingIn: '登录中...'
+    },
+    forgotPassword: {
+        title: '找回密码',
+        description: '请输入您的邮箱地址，我们将向您发送邮箱验证码',
+        email: '邮箱地址',
+        emailPlaceholder: '请输入您的邮箱',
+        sending: '发送中...',
+        successMessage: '验证码已发送到您的邮箱',
+        errorMessage: '发送失败，请稍后重试',
+        backToLogin: '返回登录',
+        captcha: '图片验证码',
+        captchaPlaceholder: '请输入图片验证码',
+        emailCode: '邮箱验证码',
+        emailCodePlaceholder: '请输入邮箱验证码',
+        sendCode: '发送验证码',
+        sendCodeSuccess: '邮箱验证码发送成功',
+        fillCaptcha: '请填写图片验证码',
+        fillEmail: '请填写邮箱',
+        fillEmailCode: '请填写邮箱验证码',
+        setNewPassword: '设置新密码',
+        newPassword: '新密码',
+        newPasswordPlaceholder: '请输入新密码',
+        confirmPassword: '确认密码',
+        confirmPasswordPlaceholder: '请再次输入新密码',
+        passwordMismatch: '两次输入的密码不一致',
+        fillNewPassword: '请输入新密码',
+        resetPassword: '重置密码',
+        resetSuccess: '密码重置成功'
+    },
+    notFound: {
+        title: '404',
+        message: '页面不存在',
+        backButton: '返回上一页',
+        homeButton: '返回首页'
+    },
+    common: {
+        cancel: '取消',
+        save: '保存',
+        saving: '保存中...',
+        ok: '确定'
+    }
+}

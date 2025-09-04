@@ -1,0 +1,10 @@
+app:
+  key: key1
+spring:
+  data:
+    redis:
+      host: 10.1.0.8
+  datasource:
+    url: jdbc:postgresql://10.1.0.8/iris
+    username: dbuser
+    password: dbuser

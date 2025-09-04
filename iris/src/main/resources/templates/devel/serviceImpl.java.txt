@@ -1,0 +1,56 @@
+package ${packagePrefix}.service.${moduleName}.impl;
+
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
+import ${packagePrefix}.model.ApiResult;
+import ${packagePrefix}.model.${moduleName}.dto.${businessName}Dto;
+import ${packagePrefix}.model.${moduleName}.entity.${businessName}Entity;
+import ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo;
+import ${packagePrefix}.repository.${moduleName}.${businessName}Repository;
+import ${packagePrefix}.service.${moduleName}.${businessName}Service;
+import ${packagePrefix}.service.system.AdminLogService;
+import ${packagePrefix}.util.DbUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@Transactional
+public class ${businessName}ServiceImpl implements ${businessName}Service {
+
+    @Resource
+    AdminLogService adminLogService;
+
+    @Resource
+    ${businessName}Repository ${businessNameVar}Repository;
+
+    @Override
+    public ApiResult<Void> delete(Long ${businessNameVar}Id) {
+        var entity = DbUtils.findByIdForUpdate(${businessName}Entity.class, ${businessNameVar}Id);
+        if (entity == null) {
+            return ApiResult.error("记录不存在");
+        }
+        DbUtils.delete(entity);
+        return ApiResult.success();
+    }
+    
+    @Override
+    public Page<${businessName}Vo> getPage(Pageable pageable) {
+        return ${businessNameVar}Repository.getPage(pageable);
+    }
+
+    @Override
+    public ApiResult<Void> save(${businessName}Dto ${businessNameVar}Dto) {
+        boolean isNew = ${businessNameVar}Dto.id() == null;
+        var entity = isNew
+                ? new ${businessName}Entity()
+                : DbUtils.findByIdForUpdate(${businessName}Entity.class, ${businessNameVar}Dto.id());
+        if (entity == null) {
+            return ApiResult.error("数据不存在, id: " + ${businessNameVar}Dto.id());
+        }
+        entity.setName(${businessNameVar}Dto.name());
+        ${businessNameVar}Repository.save(entity);
+        adminLogService.addLog((isNew ? "add" : "edit") + " ${moduleName} ${businessNameVar}", entity);
+        return ApiResult.success();
+    }
+}

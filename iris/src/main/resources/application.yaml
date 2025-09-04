@@ -1,0 +1,74 @@
+app:
+  # AES key
+  key: key1
+  # 密钥轮换策略，用于替换旧密钥
+  # new-key:
+
+logging:
+  charset:
+    file: utf-8
+  file:
+    name: logs/run.log
+  logback:
+    rolling policy:
+      clean-history-on-start: true
+      file-name-pattern: '${LOG_FILE}.%d{yyMM}.%i.log'
+      max-file-size: 200MB
+      max-history: 12
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %clr(%5p) - %clr(%logger{100}){cyan} : %m%n"
+
+# 默认监听0.0.0.0和[::]的8080端口
+server:
+  port: 8080
+  tomcat:
+    access-log:
+      enabled: true
+      file-date-format: '.yyMMdd'
+      max-days: 365
+      pattern: '%a | "%{x-forwarded-for}i" | %t |  "%r" | %D | %s | %B | "%{referer}i" | "%{user-agent}i" | "%{content-type}i"'
+      prefix: tomcat
+    basedir: ./
+    max-swallow-size: -1
+    relaxed-path-chars: \, <, >, [, ], ^, `, {, |, }
+    relaxed-query-chars: \, <, >, [, ], ^, `, {, |, }
+    # 视业务类型 cpu core * (1-4)
+    threads:
+      min-spare: 4
+      max: 4
+  servlet:
+    session:
+      # 留空,禁用跟踪模式
+      tracking-modes:
+spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
+      database: 0
+      host: '[::1]'
+  datasource:
+    url: jdbc:postgresql://[::1]/iris
+    username: dbuser
+    password: dbuser
+    hikari:
+      auto-commit: false
+      # 4(dev mode) - 10 or more
+      maximum-pool-size: 4
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+  main:
+    banner-mode: off
+  mvc:
+    servlet:
+      load-on-startup: 1
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  profiles:
+    active: dev

@@ -1,0 +1,16 @@
+[Unit]
+Description=Iris Backend Service
+After=network.target
+
+[Service]
+Type=simple
+User=user
+Group=user
+StandardOutput=null
+WorkingDirectory=/opt/iris
+ExecStart=/usr/bin/java -Xlog:gc:gc.log:time:filesize=10M,filecount=5 -Xms200M -Xmx200M -XX:+AlwaysPreTouch -jar iris.jar --spring.profiles.active=prod
+Restart=always
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target

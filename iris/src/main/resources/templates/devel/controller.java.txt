@@ -1,0 +1,61 @@
+package ${packagePrefix}.controller.admin.${moduleName};
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import ${packagePrefix}.auth.Authorize;
+import ${packagePrefix}.model.ApiResult;
+import ${packagePrefix}.model.IdDto;
+import ${packagePrefix}.model.PageVo;
+import ${packagePrefix}.model.QueryDto;
+import ${packagePrefix}.model.${moduleName}.dto.${businessName}Dto;
+import ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo;
+import ${packagePrefix}.service.${moduleName}.${businessName}Service;
+import ${packagePrefix}.util.DbUtils;
+import my.iris.validation.groups.Add;
+import my.iris.validation.groups.Edit;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path = "/admin/${moduleName}/${businessNameVar}", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "admin ${moduleName} ${businessNameVar}", description = "${moduleName} ${businessNameVar} management")
+public class ${businessName}Controller {
+
+    @Resource
+    ${businessName}Service ${businessNameVar}Service;
+
+    @Authorize("/${moduleName}/${businessNameVar}/add")
+    @PostMapping("add")
+    public ApiResult<Void> add(@RequestBody @Validated(Add.class) ${businessName}Dto ${businessNameVar}Dto) {
+        return ${businessNameVar}Service.save(${businessNameVar}Dto);
+    }
+
+    @Authorize("/${moduleName}/${businessNameVar}/edit")
+    @PostMapping("edit")
+    public ApiResult<Void> edit(@RequestBody @Validated(Edit.class) ${businessName}Dto ${businessNameVar}Dto) {
+        return ${businessNameVar}Service.save(${businessNameVar}Dto);
+    }
+
+    @Authorize("/${moduleName}/${businessNameVar}/delete")
+    @PostMapping("delete")
+    public ApiResult<Void> delete(@RequestBody @Validated IdDto idDto) {
+        return ${businessNameVar}Service.delete(idDto.id());
+    }
+
+    @Authorize("/${moduleName}/${businessNameVar}/query")
+    @PostMapping("list")
+    public ApiResult<PageVo<${businessName}Vo>> list(@RequestBody @Validated QueryDto queryDto) {
+        String[] sortableColumns = new String[]{"id"};
+        var page = ${businessNameVar}Service.getPage(
+                PageRequest.of(
+                        queryDto.page() - 1,
+                        queryDto.pageSize(),
+                        DbUtils.getSort(sortableColumns, queryDto.sort(), "id,desc")));
+        return ApiResult.success(PageVo.of(page));
+    }
+}

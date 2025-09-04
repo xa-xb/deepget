@@ -1,0 +1,30 @@
+/logs
+/img
+/work
+
+### profiles ###
+/src/main/resources/application-*.yaml
+!/src/main/resources/application-dev.yaml
+!/src/main/resources/application-prod.yaml
+!/src/main/resources/application-test.yaml
+
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Mac OS ###
+.DS_Store
+
+### gradle ###
+/.gradle
+/build
+
+
+### Windows ###
+Thumbs.db
+
+### VS Code ###
+.vscode/

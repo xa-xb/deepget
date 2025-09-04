@@ -1,0 +1,19 @@
+package ${packagePrefix}.repository.${moduleName};
+
+import ${packagePrefix}.model.${moduleName}.entity.${businessName}Entity;
+import ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+
+public interface ${businessName}Repository extends JpaRepository<${businessName}Entity, Long> {
+    @Query("""
+            SELECT NEW ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo(
+                a.id, a.name, a.createdAt)
+            FROM ${businessName}Entity a
+            ORDER BY a.id
+           """)
+    Page<${businessName}Vo> getPage(Pageable pageable);
+}

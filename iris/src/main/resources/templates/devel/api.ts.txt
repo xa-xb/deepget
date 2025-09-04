@@ -1,0 +1,28 @@
+    get${businessName}List: (data: object) => {
+        return request({
+            url: '/${moduleName}/${businessNameVar}/list',
+            method: 'post',
+            data
+        })
+    },
+    add${businessName}: (data: object) => {
+        return request({
+            url: '/${moduleName}/${businessNameVar}/add',
+            method: 'post',
+            data
+        })
+    },
+    edit${businessName}: (data: object) => {
+        return request({
+            url: '/${moduleName}/${businessNameVar}/edit',
+            method: 'post',
+            data
+        })
+    },
+    delete${businessName}: (data: object) => {
+        return request({
+            url: '/${moduleName}/${businessNameVar}/delete',
+            method: 'post',
+            data
+        })
+    },

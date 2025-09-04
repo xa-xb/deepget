@@ -1,0 +1,18 @@
+# Logs
+logs
+*.log
+/package-lock.json
+/pnpm-lock.yaml
+/tsconfig.tsbuildinfo
+/node_modules
+/dist*
+/.vscode
+
+# Editor directories and files
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
