@@ -13,7 +13,6 @@ public interface ${businessName}Repository extends JpaRepository<${businessName}
             SELECT NEW ${packagePrefix}.model.${moduleName}.vo.${businessName}Vo(
                 a.id, a.name, a.createdAt)
             FROM ${businessName}Entity a
-            ORDER BY a.id
            """)
     Page<${businessName}Vo> getPage(Pageable pageable);
 }

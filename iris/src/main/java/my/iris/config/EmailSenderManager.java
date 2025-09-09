@@ -1,8 +1,8 @@
 package my.iris.config;
 
 import my.iris.cache.SystemCache;
-import my.iris.service.system.EmailLogService;
-import my.iris.service.system.EmailService;
+import my.iris.service.email.EmailLogService;
+import my.iris.service.email.EmailService;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 

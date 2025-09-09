@@ -6,7 +6,7 @@ import my.iris.model.ApiResult;
 import my.iris.model.system.dto.ConfigDto;
 import my.iris.model.system.dto.SmtpServerDto;
 import my.iris.model.system.dto.SmtpTestDto;
-import my.iris.service.system.EmailService;
+import my.iris.service.email.EmailService;
 import my.iris.service.system.SystemService;
 import my.iris.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;

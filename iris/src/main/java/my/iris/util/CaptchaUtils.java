@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -94,8 +95,7 @@ public record CaptchaUtils() {
         TaskContext.getSession().set(CAPTCHA_SESSION_NAME, code);
         try {
             ImageIO.write(generateImage(code), "png", response.getOutputStream());
-        } catch (Exception e) {
-            LogUtils.error(CaptchaUtils.class, e);
+        } catch (IOException ignored) {
         }
     }
 }

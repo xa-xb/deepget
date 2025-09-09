@@ -1,15 +1,14 @@
-package my.iris.service.system.impl;
-
+package my.iris.service.email.impl;
 
 import my.iris.cache.SystemCache;
 import my.iris.config.EmailSenderManager;
 import my.iris.model.ApiResult;
+import my.iris.model.email.entity.EmailLogEntity;
 import my.iris.model.system.dto.SmtpTestDto;
-import my.iris.model.system.entity.EmailLogEntity;
-import my.iris.repository.system.EmailLogRepository;
+import my.iris.repository.email.EmailLogRepository;
 import my.iris.repository.user.UserRepository;
+import my.iris.service.email.EmailService;
 import my.iris.service.system.AdminLogService;
-import my.iris.service.system.EmailService;
 import my.iris.util.Helper;
 import my.iris.util.TaskContext;
 import jakarta.mail.internet.MimeMessage;
@@ -143,7 +142,7 @@ public class EmailServiceImpl implements EmailService {
             }
             sendAsync(null, smtpTestDto.to(),
                     "测试邮件 from " + sender.getUsername(),
-                    emailContent, "test_mail", null,
+                    emailContent, "test_email", null,
                     TaskContext.getClientIp(), sender);
 
         });
@@ -169,3 +168,4 @@ public class EmailServiceImpl implements EmailService {
         return "邮箱验证码错误";
     }
 }
+

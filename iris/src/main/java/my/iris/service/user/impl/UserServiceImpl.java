@@ -11,7 +11,7 @@ import my.iris.model.user.entity.UserHotEntity;
 import my.iris.model.user.vo.UserVo;
 import my.iris.repository.user.UserHotRepository;
 import my.iris.repository.user.UserRepository;
-import my.iris.service.system.EmailService;
+import my.iris.service.email.EmailService;
 import my.iris.service.user.UserLogService;
 import my.iris.service.user.UserService;
 import my.iris.task.SessionTask;

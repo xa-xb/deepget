@@ -13,7 +13,7 @@ import my.iris.model.RsaPubKeyVo;
 import my.iris.model.user.dto.NewUserDto;
 import my.iris.model.user.dto.SignInDto;
 import my.iris.model.user.vo.UserInfoVo;
-import my.iris.service.system.EmailService;
+import my.iris.service.email.EmailService;
 import my.iris.service.system.SystemService;
 import my.iris.service.user.UserService;
 import my.iris.util.*;

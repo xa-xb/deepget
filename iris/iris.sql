@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict WnkReaz5N2LRlfmA013He1BtZ9dNfuNgpSgUN4aZIETzyaBfbJ60mswDOTtz8Q8
+\restrict EBXSS8hs82wN1Sg4GBOP3re8wappb1j2FEwKL1H3lLwbabTRttGlrZiTvmhqm2b
 
 -- Dumped from database version 16.10
 -- Dumped by pg_dump version 16.10
@@ -920,7 +920,6 @@ COPY public.t_admin_log (id, created_at, user_id, ip, operation, content, durati
 --
 
 COPY public.t_admin_menu (id, name, type, page, icon, parent_id, cache, enable, visible, route, order_num, created_at) FROM stdin;
-4	用户	1		User	0	f	t	t	/user	20	2025-01-01 00:00:00
 13	菜单管理	2	system/MenuPage	Menu	10	f	t	t	menu	20	2025-01-01 00:00:00
 14	系统配置	2	system/ConfigPage	Setting	10	f	t	t	config	90	2025-01-01 00:00:00
 18	系统信息	2	system/InfoPage	Warning	10	t	t	t	info	100	2025-01-01 00:00:00
@@ -933,24 +932,10 @@ COPY public.t_admin_menu (id, name, type, page, icon, parent_id, cache, enable, 
 26	查询角色	3			12	f	t	t	query	1	2025-01-01 00:00:00
 27	编辑角色	3			12	f	t	t	edit	3	2025-01-01 00:00:00
 28	新建角色	3			12	f	t	t	add	2	2025-01-01 00:00:00
+91	查询	3			90	f	t	f	query	10	2025-01-01 00:00:00
 29	删除角色	3			12	f	t	t	delete	4	2025-01-01 00:00:00
 32	查询用户	3			19	f	t	t	query	1	2025-01-01 00:00:00
 33	更改密码	3			19	f	t	f	changePassword	5	2025-01-01 00:00:00
-80	查询AI供应商	3			79	f	t	f	query	10	2025-01-01 00:00:00
-94	查询聊天记录	3			93	f	t	t	query	10	2025-01-01 00:00:00
-95	添加聊天记录	3			93	f	t	t	add	20	2025-01-01 00:00:00
-96	修改聊天记录	3			93	f	t	t	edit	30	2025-01-01 00:00:00
-97	删除聊天记录	3			93	f	t	t	delete	40	2025-01-01 00:00:00
-99	查询加解密	3			98	f	t	t	query	10	2025-01-01 00:00:00
-98	加解密	2	devel/SecurityPage	Lock	89	t	t	t	security	100	2025-01-01 00:00:00
-101	查询对话主题	3			100	f	t	t	query	10	2025-01-01 00:00:00
-102	添加对话主题	3			100	f	t	t	add	20	2025-01-01 00:00:00
-103	修改对话主题	3			100	f	t	t	edit	30	2025-01-01 00:00:00
-104	删除对话主题	3			100	f	t	t	delete	40	2025-01-01 00:00:00
-111	查询	3			110	f	t	f	query	1	2025-01-01 00:00:00
-112	编辑	3			110	f	t	f	edit	1	2025-01-01 00:00:00
-110	AI配置	2	ai/ConfigPage	Setting	78	f	t	t	config	100	2025-01-01 00:00:00
-100	对话主题	2	ai/ThreadPage	Memo	78	t	t	t	thread	1	2025-01-01 00:00:00
 34	查询系统信息	3			18	f	t	f	query	1	2025-01-01 00:00:00
 35	查询管理员	3			11	f	t	t	query	1	2025-01-01 00:00:00
 37	查询用户日志	3			36	f	t	t	query	1	2025-01-01 00:00:00
@@ -971,7 +956,6 @@ COPY public.t_admin_menu (id, name, type, page, icon, parent_id, cache, enable, 
 85	查询模型	3			84	f	t	f	query	10	2025-01-01 00:00:00
 86	新建模型	3			84	f	t	f	add	20	2025-01-01 00:00:00
 92	添加生成	3			90	f	t	f	add	20	2025-01-01 00:00:00
-91	查询	3			90	f	t	f	query	10	2025-01-01 00:00:00
 87	编辑模型	3			84	f	t	f	edit	30	2025-01-01 00:00:00
 88	删除模型	3			84	f	t	f	delete	40	2025-01-01 00:00:00
 81	添加AI供应商	3			79	f	t	f	add	20	2025-01-01 00:00:00
@@ -982,10 +966,29 @@ COPY public.t_admin_menu (id, name, type, page, icon, parent_id, cache, enable, 
 10	系统	1		SetUp	0	f	t	t	/system	1000	2025-01-01 00:00:00
 43	保存系统配置	3			14	f	t	f	save	20	2025-01-01 00:00:00
 42	查询系统配置	3			14	f	t	f	query	10	2025-01-01 00:00:00
+80	查询AI供应商	3			79	f	t	f	query	10	2025-01-01 00:00:00
+94	查询聊天记录	3			93	f	t	t	query	10	2025-01-01 00:00:00
+95	添加聊天记录	3			93	f	t	t	add	20	2025-01-01 00:00:00
+96	修改聊天记录	3			93	f	t	t	edit	30	2025-01-01 00:00:00
+97	删除聊天记录	3			93	f	t	t	delete	40	2025-01-01 00:00:00
 78	AI	1		Cpu	0	f	t	t	/ai	10	2025-01-01 00:00:00
+99	查询加解密	3			98	f	t	t	query	10	2025-01-01 00:00:00
+98	加解密	2	devel/SecurityPage	Lock	89	t	t	t	security	100	2025-01-01 00:00:00
+101	查询对话主题	3			100	f	t	t	query	10	2025-01-01 00:00:00
+102	添加对话主题	3			100	f	t	t	add	20	2025-01-01 00:00:00
+103	修改对话主题	3			100	f	t	t	edit	30	2025-01-01 00:00:00
+104	删除对话主题	3			100	f	t	t	delete	40	2025-01-01 00:00:00
+111	查询	3			110	f	t	f	query	1	2025-01-01 00:00:00
+112	编辑	3			110	f	t	f	edit	1	2025-01-01 00:00:00
+110	AI配置	2	ai/ConfigPage	Setting	78	f	t	t	config	100	2025-01-01 00:00:00
+100	对话主题	2	ai/ThreadPage	Memo	78	t	t	t	thread	1	2025-01-01 00:00:00
 93	对话记录	2	ai/ChatPage	ChatLineSquare	78	t	t	t	chat	2	2025-01-01 00:00:00
 79	供应商	2	ai/ProviderPage	CollectionTag	78	t	t	t	provider	10	2025-01-01 00:00:00
 84	模型管理	2	ai/ModelPage	Cellphone	78	t	t	t	model	5	2025-01-01 00:00:00
+113	Email	1		Message	0	f	t	t	/email	20	2025-01-01 00:00:00
+4	用户	1		User	0	f	t	t	/user	30	2025-01-01 00:00:00
+114	邮箱日志	2	email/EmailLogPage		113	t	t	t	email_log	100	2025-01-01 00:00:00
+115	查询邮箱日志	3			114	f	t	t	query	10	2025-01-01 00:00:00
 \.
 
 
@@ -1442,5 +1445,5 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict WnkReaz5N2LRlfmA013He1BtZ9dNfuNgpSgUN4aZIETzyaBfbJ60mswDOTtz8Q8
+\unrestrict EBXSS8hs82wN1Sg4GBOP3re8wappb1j2FEwKL1H3lLwbabTRttGlrZiTvmhqm2b
 

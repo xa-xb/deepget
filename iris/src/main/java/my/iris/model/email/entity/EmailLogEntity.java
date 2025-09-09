@@ -1,4 +1,4 @@
-package my.iris.model.system.entity;
+package my.iris.model.email.entity;
 
 import my.iris.model.BaseEntity;
 import jakarta.persistence.Column;

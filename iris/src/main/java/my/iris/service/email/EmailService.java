@@ -1,4 +1,4 @@
-package my.iris.service.system;
+package my.iris.service.email;
 
 import my.iris.model.ApiResult;
 import my.iris.model.system.dto.SmtpServerDto;
