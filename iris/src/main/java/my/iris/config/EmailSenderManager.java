@@ -3,6 +3,7 @@ package my.iris.config;
 import my.iris.cache.SystemCache;
 import my.iris.service.email.EmailLogService;
 import my.iris.service.email.EmailService;
+import org.jspecify.annotations.Nullable;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EmailSenderManager {
     private final ReentrantLock lock = new ReentrantLock();
     long counter;
-    private List<JavaMailSenderImpl> mailSenders;
+    private List<JavaMailSenderImpl> senders;
 
     EmailLogService emailLogService;
     private final SystemCache systemCache;
@@ -31,13 +32,13 @@ public class EmailSenderManager {
     public void init() {
         lock.lock();
         try {
-            mailSenders = new LinkedList<>();
+            senders = new LinkedList<>();
             systemCache.getSmtpServers().forEach((smtpServer) -> {
                 var sender = EmailService.createMailSender(smtpServer);
                 if (sender == null) {
                     return;
                 }
-                mailSenders.add(sender);
+                senders.add(sender);
             });
             counter = emailLogService.getLastId();
         } finally {
@@ -45,16 +46,30 @@ public class EmailSenderManager {
         }
     }
 
-    public JavaMailSenderImpl getMailSender() {
+    public JavaMailSenderImpl getSender() {
         lock.lock();
         try {
-            var result = mailSenders.get((int) (counter % mailSenders.size()));
+            var result = senders.get((int) (counter % senders.size()));
             counter++;
             return result;
         } finally {
             lock.unlock();
         }
+    }
 
+    public List<String> getSenderNames() {
+        return senders.stream()
+                .map(JavaMailSenderImpl::getUsername)
+                .toList();
+    }
+
+    @Nullable
+    public JavaMailSenderImpl getSenderByName(String senderEmail) {
+        if (senderEmail == null) return null;
+        return senders.stream()
+                .filter(item -> senderEmail.equals(item.getUsername()))
+                .findFirst()
+                .orElse(null);
     }
 }
 

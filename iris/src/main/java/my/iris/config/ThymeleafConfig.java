@@ -9,7 +9,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class ThymeleafConfig {
 
     @Bean
-    @Description("Thymeleaf template resolver")
+    @Description("Thymeleaf templateName resolver")
     public ClassLoaderTemplateResolver templateResolver() {
         var templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("templates/");

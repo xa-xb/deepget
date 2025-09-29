@@ -19,6 +19,7 @@ import my.iris.repository.ai.AiChatThreadRepository;
 import my.iris.service.ai.AiChatService;
 import my.iris.service.ai.AiThreadService;
 import my.iris.util.JsonUtils;
+import my.iris.util.LogUtils;
 import my.iris.util.UUIDUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -102,6 +103,7 @@ public class AiChatServiceImpl implements AiChatService {
                                 .modelName(modelInstance.modelName())
                                 .build()
                 ).build();
+
         modelInstance.chatModel().chat(chatRequest, sseHandler);
         return sseHandler.getSseEmitter();
     }

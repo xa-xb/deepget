@@ -37,6 +37,8 @@ server:
       min-spare: 4
       max: 4
   servlet:
+    encoding:
+      force: true
     session:
       # 留空,禁用跟踪模式
       tracking-modes:

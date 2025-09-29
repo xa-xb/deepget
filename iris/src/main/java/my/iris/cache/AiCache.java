@@ -15,10 +15,9 @@ import my.iris.repository.system.SystemRepository;
 import my.iris.util.Helper;
 import my.iris.util.JsonUtils;
 import my.iris.util.SecurityUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -45,7 +44,10 @@ public class AiCache {
     public synchronized void update() {
         updateAiConfig();
         aiProviderVos = aiProviderRepository.getList();
-        this.aiModelVos = aiModelRepository.getList().stream().filter(AiModelVo::enabled).toList();
+        this.aiModelVos = aiModelRepository.getPage(
+                PageRequest.of(0, 0xff),
+                null, null, true).getContent();
+
         this.aiModelClientVos = aiModelVos.stream()
                 .map(aiModelVo -> new AiModelClientVo(
                         aiModelVo.id(),
@@ -83,7 +85,10 @@ public class AiCache {
                 .findFirst()
                 .orElse(null);
         var aiProviderVo = aiProviderVos.stream()
-                .filter(item -> item.id().equals(aiModelVo.providerId()))
+                .filter(item -> {
+                    assert aiModelVo != null;
+                    return item.id().equals(aiModelVo.providerId());
+                })
                 .findFirst()
                 .orElse(null);
         if (aiModelVo == null || aiProviderVo == null) return null;

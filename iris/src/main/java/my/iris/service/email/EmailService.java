@@ -9,6 +9,21 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface EmailService {
+    String HTML_BODY_STYLE = """
+            background:#f3f4f6;
+            margin:0;
+            padding:0;
+            width:100%
+            """;
+    String HTML_TABLE_STYLE = """
+            background:#ffffff;
+            font-size:16px;
+            line-height:1.6;
+            text-align:left;
+            margin:0 auto;
+            padding:25px;
+            width:640px
+            """;
 
     void send(Long userId, String to, String subject, String html, String logType, String logData, String logIp, JavaMailSenderImpl mailSender);
 
@@ -18,6 +33,9 @@ public interface EmailService {
 
     void sendAsync(Long userId, String to, String subject, String html, String logType, String logData);
 
+    void sendAd(String to);
+    void sendAd(String to, JavaMailSenderImpl mailSender);
+
     void sendWelcomeEmail(Long userId, String to);
 
     /**
@@ -25,8 +43,8 @@ public interface EmailService {
      *
      * @param userId user id
      * @param action action
-     * @param to   the target email address
-     * @param code the verification code to send
+     * @param to     the target email address
+     * @param code   the verification code to send
      * @return an {@code Optional} containing an error message if sending fails; {@code Optional.empty()} indicates success
      */
     Optional<String> sendVerificationCode(Long userId, String action, String to, String code);
@@ -40,6 +58,7 @@ public interface EmailService {
      * @return an {@code Optional} containing an error message if sending fails; {@code Optional.empty()} indicates success
      */
     Optional<String> validateDailyEmailLimit(String email);
+
     String verifyCode(String email, String action, String code);
 
     static JavaMailSenderImpl createMailSender(SmtpServerDto smtpServer) {

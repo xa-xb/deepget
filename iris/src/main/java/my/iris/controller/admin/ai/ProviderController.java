@@ -25,37 +25,37 @@ public class ProviderController {
     @Resource
     AiProviderService aiProviderService;
 
-    @Authorize("/my/iris/provider/add")
+    @Authorize("/ai/provider/add")
     @PostMapping("add")
     public ApiResult<Void> add(@RequestBody @Validated(Add.class) AiProviderDto aiProviderDto) {
         return aiProviderService.save(aiProviderDto);
     }
 
-    @Authorize("/my/iris/provider/edit")
+    @Authorize("/ai/provider/edit")
     @PostMapping("edit")
     public ApiResult<Void> edit(@RequestBody @Validated(Edit.class) AiProviderDto aiProviderDto) {
         return aiProviderService.save(aiProviderDto);
     }
-    @Authorize("/my/iris/provider/edit")
+    @Authorize("/ai/provider/edit")
     @PostMapping("upload")
     public ApiResult<String> upload(@RequestParam("file") MultipartFile file) {
 
         return aiProviderService.upload(file);
     }
 
-    @Authorize("/my/iris/provider/delete")
+    @Authorize("/ai/provider/delete")
     @PostMapping("delete")
     public ApiResult<Void> delete(@RequestBody @Validated IdDto idDto) {
         return aiProviderService.delete(idDto);
     }
 
-    @Authorize({"/my/iris/provider/query"})
+    @Authorize({"/ai/provider/query"})
     @PostMapping("api_compatibles")
     public ApiResult<List<String>> apiCompatibles() {
         return ApiResult.success(aiProviderService.getApiCompatibles());
     }
 
-    @Authorize({"/my/iris/provider/query", "/my/iris/model/query"})
+    @Authorize({"/ai/provider/query", "/ai/model/query"})
     @PostMapping("list")
     public ApiResult<List<AiProviderVo>> list() {
         return ApiResult.success(aiProviderService.getList());

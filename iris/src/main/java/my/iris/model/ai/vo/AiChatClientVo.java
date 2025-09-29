@@ -6,6 +6,7 @@ public record AiChatClientVo(
         String threadUuid,
         String prompt,
         String completion,
+        String error,
         Long inputTokens,
         Long outputTokens,
         Long totalTokens

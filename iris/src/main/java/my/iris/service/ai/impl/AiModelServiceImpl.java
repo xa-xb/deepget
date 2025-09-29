@@ -6,13 +6,19 @@ import my.iris.cache.AiCache;
 import my.iris.model.ApiResult;
 import my.iris.model.IdDto;
 import my.iris.model.ai.dto.AiModelDto;
+import my.iris.model.ai.dto.AiModelQueryDto;
+import my.iris.model.ai.entity.AiChatEntity;
 import my.iris.model.ai.entity.AiModelEntity;
 import my.iris.model.ai.entity.AiProviderEntity;
 import my.iris.model.ai.vo.AiModelVo;
+import my.iris.repository.ai.AiChatRepository;
 import my.iris.repository.ai.AiModelRepository;
 import my.iris.service.ai.AiModelService;
 import my.iris.service.system.AdminLogService;
 import my.iris.util.DbUtils;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -29,18 +35,28 @@ public class AiModelServiceImpl implements AiModelService {
 
     @Resource
     AiCache aiCache;
+    @Resource
+    private AiChatRepository aiChatRepository;
 
     @Override
     public ApiResult<Void> delete(IdDto idDto) {
+        if (aiChatRepository.exists(Example.of(new AiChatEntity().setModelId(idDto.id())))) {
+            return ApiResult.error("Please delete the chat history for this model.");
+        }
         aiModelRepository.deleteById(idDto.id());
-        adminLogService.addLog("delete model", idDto);
+        adminLogService.addLog("delete_model", idDto);
         aiCache.update();
         return ApiResult.success();
     }
 
+
     @Override
-    public List<AiModelVo> getList() {
-        return aiModelRepository.getList();
+    public Page<AiModelVo> getPage(AiModelQueryDto queryDto) {
+        var pageRequest = PageRequest.of(
+                queryDto.getPage() - 1,
+                queryDto.getPageSize());
+        return aiModelRepository.getPage(pageRequest, DbUtils.getLikeWords(queryDto.getName()),
+                queryDto.getProviderId(), queryDto.getEnabled());
     }
 
 
@@ -71,7 +87,7 @@ public class AiModelServiceImpl implements AiModelService {
             aiModelEntity.setSysName(aiModelEntity.getName());
         }
         aiModelRepository.save(aiModelEntity);
-        adminLogService.addLog((isNew ? "add" : "edit") + " ai model", aiModelDto);
+        adminLogService.addLog((isNew ? "add" : "edit") + "_ai_model", aiModelDto);
         aiCache.update();
         return ApiResult.success();
     }

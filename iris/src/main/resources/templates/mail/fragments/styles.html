@@ -4,43 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            margin: 20px;
-            padding: 0;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 14px;
-            color: #333333;
-            background-color: #ffffff;
-        }
-        h1 {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        p {
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 14px 0;
-        }
         .code {
             font-weight: bold;
             color: #111;
         }
+
         a {
             color: #007bff;
             text-decoration: underline;
         }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #777777;
-        }
+
     </style>
 </head>
 <body>
-    <div class="footer" th:fragment="common_footer">
-        <p>由 <a th:href="${siteUrl}" th:text="${siteName}" /> 自动发送，请勿直接回复。</p>
-        <p>如果您意外收到此邮件，请忽略。</p>
-    </div>
+
+<div style=" margin-top: 20px;font-size: 14px;color: #777777;" th:fragment="tr_footer">
+    <p> 由 <a th:href="${siteUrl}" th:text="${siteName}"/> 自动发送，请勿直接回复。</p>
+    <p>如果您意外收到此邮件，请忽略。</p>
+</div>
+
+
 </body>
 </html>

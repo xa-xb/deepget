@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="~{mail/fragments/styles :: common_styles}"></head>
-
-<body>
-<p>您的验证码是: <strong th:text="${code}" /></p>
-<p>请使用验证码完成操作, 验证码有效期为5分钟。</p>
-<div th:replace="~{mail/fragments/styles :: common_footer}"></div>
-</body>
-</html>
+<div th:style="${bodyStyle}">
+    <table th:style="${tableStyle}">
+        <tbody>
+        <tr>
+            <td>
+                <p>您的验证码是: <strong th:text="${code}" /></p>
+                <p>请使用验证码完成操作, 验证码有效期为5分钟。</p>
+                <div th:replace="~{mail/fragments/styles :: tr_footer}"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

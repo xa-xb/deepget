@@ -36,7 +36,6 @@ public class EmailLogEntity extends BaseEntity<EmailLogEntity> {
     private String ip;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "\"from\"", nullable = false)
     private String from;
 

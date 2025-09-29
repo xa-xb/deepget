@@ -36,9 +36,22 @@ public interface EmailLogRepository extends JpaRepository<EmailLogEntity, Long> 
     @NativeQuery(value = """
             SELECT *
             FROM t_email_log
+            WHERE created_at >= NOW() - INTERVAL '30 days'
+              AND "to" = :email
+              AND action = :action
+              AND err IS NULL
+            ORDER BY created_at ASC
+            LIMIT 1
+            """)
+    Optional<EmailLogEntity> findLatestWithin30Days(String email, String action);
+
+    @NativeQuery(value = """
+            SELECT *
+            FROM t_email_log
             WHERE created_at >= NOW() - INTERVAL '5 minutes'
               AND "to" = :email
               AND action = :action
+              AND err IS NULL
             ORDER BY created_at ASC
             LIMIT 1
             """)
@@ -49,6 +62,7 @@ public interface EmailLogRepository extends JpaRepository<EmailLogEntity, Long> 
             select last_value from t_email_log_id_seq
             """)
     Long getLastId();
+
     @Query("""
             SELECT NEW my.iris.model.email.vo.EmailLogVo(
                 a.id, a.from, a.to, a.action, a.duration,

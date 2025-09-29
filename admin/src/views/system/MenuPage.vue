@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="form.id === null ? '新建菜单' : '修改菜单'" width="700"
     @close="formRef?.clearValidate()">
-    <el-form label-width="78px" :model="form" :rules="rules" inline ref="formRef">
+    <el-form label-width="88px" :model="form" :rules="rules" inline ref="formRef">
 
       <el-row>
         <el-col :span="12">

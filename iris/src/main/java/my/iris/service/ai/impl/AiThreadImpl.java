@@ -59,7 +59,7 @@ public class AiThreadImpl implements AiThreadService {
                     var list = aiChatRepository.findByThreadIdOrderById(threadEntity.getId())
                             .stream()
                             .map(item -> new AiChatClientVo(item.getModelId(), item.getUuid().toString(),
-                                    threadUuid.toString(), item.getPrompt(), item.getCompletion(),
+                                    threadUuid.toString(), item.getPrompt(), item.getCompletion(), item.getError(),
                                     item.getInputTokenCount(), item.getOutputTokenCount(), item.getTotalTokenCount())
                             ).toList();
                     return ApiResult.success(list);

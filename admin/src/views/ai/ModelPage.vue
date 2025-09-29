@@ -83,7 +83,30 @@
     <el-row justify="start">
         <el-button type="primary" plain @click="newModel" v-if="userStore.hasAuthorize('/ai/model/add')">新建</el-button>
     </el-row><br>
-    <el-table v-loading="loading" :data="result.data" style="width: 100%; margin-bottom: 20px" row-key="id" border
+    <el-row justify="start">
+        <el-form :inline="true">
+            <el-form-item label="名称">
+                <el-input v-model="queryForm.name" placeholder="名称" @keydown.enter="submit" clearable />
+            </el-form-item>
+
+            <el-form-item label="供应商">
+                <el-select v-model="queryForm.providerId" placeholder="Select" clearable>
+                    <el-option v-for="item in aiProviders.value" :key="item.id" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-select v-model="queryForm.enabled" placeholder="Select" clearable>
+                    <el-option label="启用" :value="true" />
+                    <el-option label="停用" :value="false" />
+                </el-select>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="submit">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <el-table v-loading="loading" :data="result.data.rows" style="width: 100%; margin-bottom: 20px" row-key="id" border
         default-expand-all>
         <el-table-column prop="id" label="id" width="80" />
         <el-table-column>
@@ -124,6 +147,11 @@
             </template>
         </el-table-column>
     </el-table>
+    <el-row justify="end">
+        <el-pagination layout="total, sizes, prev, pager, next, jumper" v-model:current-page="queryData.page"
+            v-model:page-size="queryData.pageSize" :page-count="result.data.totalPages" :page-sizes="[20, 50, 80, 100]"
+            :total="result.data.totalRecords" />
+    </el-row>
 </template>
 <script setup lang="ts">
 import { nextTick, ref, reactive, useTemplateRef, onMounted } from 'vue'
@@ -135,7 +163,21 @@ import type { FormInstance } from 'element-plus'
 const userStore = useUserStore()
 
 const result = reactive({
-    data: []
+   data: {
+        rows: [],
+        totalPages: 0,
+        totalRecords: 0
+    }
+})
+const queryData = reactive({
+    page: 1,
+    pageSize: 20,
+    sort: ''
+})
+const queryForm = reactive({
+    name: '',
+    enabled: null as boolean | null,
+    providerId: null as number | null
 })
 const aiProviders = reactive([]) as any
 const modelDialog = reactive({
@@ -173,8 +215,12 @@ const loading = ref(true)
 
 const query = async () => {
     loading.value = true
-    const resultData = await aiApi.getModelList({})
-    Object.assign(result, resultData)
+    const queryParams = {
+        ...queryData,
+        ...queryForm
+    }
+    const resp = await aiApi.getModelList(queryParams)
+    Object.assign(result, resp)
     loading.value = false
 }
 
@@ -233,6 +279,13 @@ const delOrg = (row: any) => {
             query()
         })
     })
+}
+const submit = () => {
+    if (queryData.page !== 1) {
+        queryData.page = 1
+    } else {
+        query()
+    }
 }
 
 onMounted(async () => {

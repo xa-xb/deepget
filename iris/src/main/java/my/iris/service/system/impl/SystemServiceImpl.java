@@ -118,7 +118,7 @@ public class SystemServiceImpl implements SystemService {
         String tmp = JsonUtils.stringify(configDto.getSmtpServers());
         assert tmp != null;
         tmp = SecurityUtils.aesEncrypt(tmp);
-        systemRepository.updateValueByEa(configDto.getFrontendPath(), "devel", "frontendPath");
+        systemRepository.updateValueByEa(configDto.getFrontendPath(), "devel", "frontend_path");
         systemRepository.updateValueByEa(configDto.getDailyEmailLimit(), "sys", "daily_email_limit");
         systemRepository.updateValueByEa(configDto.getDailySmsLimit(), "sys", "daily_sms_limit");
         systemRepository.updateValueByEa(configDto.getIcpNumber(), "sys", "icp_number");

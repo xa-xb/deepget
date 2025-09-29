@@ -1,0 +1,35 @@
+<div th:style="${bodyStyle}">
+    <table th:style="${tableStyle}">
+        <tbody>
+        <tr>
+            <td>
+                <strong>尊敬的用户，</strong>
+                <p>如果您正在寻找一个真正强大的大模型平台，那么 <a th:href="${siteUrl}" th:text="${siteName}"/> 绝对是您的不二之选！我们为您提供的每一个模型都经过严格验证，确保每个模型都是真正的、大规模的深度学习模型，远超那些只做表面功夫的平台。</p>
+                <h3>为什么选择 <a th:href="${siteUrl}" th:text="${siteName}"/> ？</h3>
+                <ul>
+                    <li>
+                        <strong>真正的大模型：</strong>我们提供的每个模型都来源于权威机构或顶级公司，保证其真实性和可靠性。
+                    </li>
+                    <li>
+                        <strong>顶级模型免费使用：</strong>目前提供诸如 Grok 4 Fast, Gemini 2.5 Flash Lite和 GPT-5 Nano 等顶级模型免费使用。
+                    </li>
+                    <li><strong>无虚假宣传：</strong>与市场上的某些平台不同，<a th:href="${siteUrl}" th:text="${siteName}"/> 所使用的模型都是官方或权威机构的 API，而非无名的第三方训练的通用模型。
+                    </li>
+                    <li><strong>轻松辨别真假：</strong>如何辨别一个模型是否真实？可以通过以下几个方法：
+                        <ul>
+                            <li>
+                                <strong>通过提示词：</strong>发送“请详细介绍自己”。真实的模型会清晰介绍自己的信息，包括公司背景、模型特性和局限性；假模型则常常模糊回答，声称自己是通用人工智能。
+                            </li>
+                            <li>
+                                <strong>测试其效果：</strong>真实的大模型在多个实际场景中表现优异，假模型则可能在简单任务中出错频频。
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>立即访问 <a th:href="${siteUrl}" th:text="${siteName}"/> 开启你的 AI 探索之旅，体验最真实的大模型！</p>
+                <p>祝您生活愉快，<br><a th:href="${siteUrl}" th:text="${siteName} + '团队'"/><br>[[${siteUrl}]]</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

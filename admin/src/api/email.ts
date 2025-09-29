@@ -29,4 +29,37 @@ export default ({
             data
         })
     },
+    getEmailBlastList: () => {
+        return request({
+            url: '/email/emailBlast/list',
+            method: 'post'
+        })
+    },
+    getEmailSenderList: () => {
+        return request({
+            url: '/email/emailBlast/senders',
+            method: 'post'
+        })
+    },
+    addEmailBlast: (data: object) => {
+        return request({
+            url: '/email/emailBlast/add',
+            method: 'post',
+            data
+        })
+    },
+
+    deleteEmailBlast: (data: object) => {
+        return request({
+            url: '/email/emailBlast/delete',
+            method: 'post',
+            data
+        })
+    },
+     deleteEmailBlastAll: () => {
+        return request({
+            url: '/email/emailBlast/delete_all',
+            method: 'post'
+        })
+    },
 })

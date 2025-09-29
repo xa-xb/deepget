@@ -1,6 +1,7 @@
 package my.iris.service.ai.impl;
 
 import dev.langchain4j.exception.InternalServerException;
+import dev.langchain4j.exception.ModelNotFoundException;
 import dev.langchain4j.exception.RateLimitException;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
@@ -9,6 +10,7 @@ import my.iris.config.AppConfig;
 import my.iris.model.ai.dto.AiChatDto;
 import my.iris.model.ai.entity.AiChatEntity;
 import my.iris.repository.ai.AiChatRepository;
+import my.iris.util.JsonUtils;
 import my.iris.util.LogUtils;
 import my.iris.util.UUIDUtils;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -103,13 +105,33 @@ public class SseChatHandler implements StreamingChatResponseHandler {
             case RateLimitException ignored -> sendError("Too many requests. Please wait and try again shortly.");
             case InternalServerException ignored -> sendError("Internal Server Error.");
             case IllegalStateException ignored -> complete();
+            case ModelNotFoundException ignored -> sendError("Model not found.");
             case null, default -> LogUtils.warn(getClass(), throwable, throwable);
         }
     }
 
+
     public SseEmitter sendError(Object message) {
         send("error", message);
         complete();
+
+        int duration = (int) (System.currentTimeMillis() - startTime);
+        // tokenUsage maybe null
+        var chatEntity = new AiChatEntity()
+                .setUuid(UUIDUtils.getUuid(chatUuid))
+                .setThreadId(threadId)
+                .setPrompt(chatDto.getPrompt())
+                .setCompletion(null)
+                .setError(message.toString())
+                .setModelId(chatDto.getModelId())
+                .setInputTokenCount(0L)
+                .setOutputTokenCount(0L)
+                .setTotalTokenCount(0L)
+                .setCreditsUsed(0L)
+                .setCreditsRemaining(0L)
+                .setDuration(duration);
+        aiChatRepository.save(chatEntity);
+
         return sseEmitter;
     }
 
@@ -128,7 +150,8 @@ public class SseChatHandler implements StreamingChatResponseHandler {
         Object data = object instanceof String ? Map.of("m", object) : object;
         name = name == null ? "message" : name;
         try {
-            sseEmitter.send(SseEmitter.event().name(name).data(data));
+            sseEmitter.send(SseEmitter.event().name(name)
+                    .data(JsonUtils.stringify(data)));
         } catch (IOException ignored) {
             complete();
         }

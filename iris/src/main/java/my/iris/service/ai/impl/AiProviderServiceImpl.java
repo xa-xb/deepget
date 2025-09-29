@@ -56,7 +56,7 @@ public class AiProviderServiceImpl implements AiProviderService {
             return ApiResult.error("请先删除该供应商下的模型");
         }
         aiProviderRepository.deleteById(idDto.id());
-        adminLogService.addLog("delete ai provider", idDto);
+        adminLogService.addLog("delete_ai_provider", idDto);
         aiCache.update();
         return ApiResult.success();
     }
@@ -97,7 +97,7 @@ public class AiProviderServiceImpl implements AiProviderService {
                 .setApiUrl(aiProviderDto.getApiUrl())
                 .setOrderNum(aiProviderDto.getOrderNum());
         aiProviderRepository.save(entity);
-        adminLogService.addLog((isNew ? "add" : "edit") + " ai provider", aiProviderDto);
+        adminLogService.addLog((isNew ? "add" : "edit") + "_ai_provider", aiProviderDto);
         aiCache.update();
         return ApiResult.success();
     }

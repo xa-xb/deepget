@@ -10,14 +10,12 @@ import my.iris.model.PageVo;
 import my.iris.model.QueryDto;
 import my.iris.model.user.dto.NewUserDto;
 import my.iris.model.user.dto.QueryUserDto;
-import my.iris.model.user.entity.UserEntity;
 import my.iris.model.user.vo.UserVo;
 import my.iris.service.system.AdminLogService;
 import my.iris.service.user.UserService;
 import my.iris.util.DbUtils;
 import my.iris.util.SecurityUtils;
 import my.iris.util.ValidatorUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +32,7 @@ import java.util.Map;
 public class UserController {
     @Resource
     UserService userService;
-    @Autowired
+    @Resource
     private AdminLogService adminLogService;
 
     @Authorize("/user/user/add")

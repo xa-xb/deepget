@@ -14,7 +14,7 @@ import my.iris.repository.user.UserRepository;
 import my.iris.service.email.EmailService;
 import my.iris.service.user.UserLogService;
 import my.iris.service.user.UserService;
-import my.iris.task.SessionTask;
+import my.iris.task.ScrubSessionTask;
 import my.iris.util.*;
 import my.iris.util.status.AccountStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmailService emailService;
     @Autowired
-    private SessionTask sessionTask;
+    private ScrubSessionTask sessionTask;
 
     @Override
     public void bindEmail(Long userId, String email) {

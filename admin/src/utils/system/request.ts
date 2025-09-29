@@ -6,7 +6,7 @@ const baseURL: any = import.meta.env.VITE_BASE_URL
 
 const service: AxiosInstance = axios.create({
   baseURL: baseURL,
-  timeout: 10000
+  timeout: 30000
 })
 
 // 请求前的统一处理

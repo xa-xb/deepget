@@ -45,6 +45,5 @@ public class StartupTask {
 
             LogUtils.info(getClass(), "aes key replaced successfully");
         }
-
     }
 }

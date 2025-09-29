@@ -301,7 +301,7 @@ const changePassword = async () => {
     passwordDialog.loading = true
     const data = {
         id: record.id,
-        pwd: await rsaEncrypt(passwordDialog.pwd)
+        password: await rsaEncrypt(passwordDialog.pwd)
     }
     userApi.changePassword(data).then(() => {
         ElMessage.success('密码更改完成')

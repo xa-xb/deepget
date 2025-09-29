@@ -58,53 +58,54 @@ public class GenServiceImpl implements GenService {
             return ApiResult.error(e.getMessage());
         }
 
-        var result = new StringBuilder(config.toString());
+        var sbLog = new StringBuilder(config.toString());
 
-        createTable(config, result);
-        createMenu(config, result);
+        createTable(config, sbLog);
+        createMenu(config, sbLog);
 
         String templateStr = readFile(Path.of(config.templateDir, "entity.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "model", config.moduleName, "entity", config.businessName + "Entity.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "dto.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "model", config.moduleName, "dto", config.businessName + "Dto.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "vo.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "model", config.moduleName, "vo", config.businessName + "Vo.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "repository.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "repository", config.moduleName, config.businessName + "Repository.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "service.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "service", config.moduleName, config.businessName + "Service.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "serviceImpl.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "service", config.moduleName, "impl", config.businessName + "ServiceImpl.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
         templateStr = readFile(Path.of(config.templateDir, "controller.java.txt"));
         writeFile(
                 Path.of(config.codeDir, "controller", "admin", config.moduleName, config.businessName + "Controller.java"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
 
-        createApiFile(config, result);
+        createApiFile(config, sbLog);
         templateStr = readFile(Path.of(config.templateDir, "page.vue.txt"));
         writeFile(
                 Path.of(config.frontendPath, "src", "views", config.moduleName, config.businessName + "Page.vue"),
-                formatCode(templateStr, config), result);
+                formatCode(templateStr, config), sbLog);
         adminLogService.addLog("生成代码", config);
-        return ApiResult.success(result.toString());
+        LogUtils.info(this.getClass(), sbLog);
+        return ApiResult.success(sbLog.toString());
     }
 
 
@@ -181,7 +182,12 @@ public class GenServiceImpl implements GenService {
     }
 
     void createMenu(Config config, StringBuilder log) {
-        var example = Example.of(new AdminMenuEntity().setRoute("/" + config.businessNameVar));
+        var route = DbUtils.camelToSnake(config.businessNameVar);
+        var example = Example.of(
+                new AdminMenuEntity()
+                        .setParentId(config.moduleId)
+                        .setRoute(route)
+        );
         if (adminMenuRepository.exists(example)) {
             log.append("menu already exists: ").append(config.businessNameVar).append("\n");
             return;
@@ -193,7 +199,7 @@ public class GenServiceImpl implements GenService {
                 .setType(2)
                 .setVisible(true)
                 .setPage(config.moduleName + "/" + config.businessName + "Page")
-                .setRoute(DbUtils.camelToSnake(config.businessNameVar));
+                .setRoute(route);
         adminMenuRepository.saveAndFlush(adminMenu);
         var menuId = adminMenu.getId();
         adminMenu = new AdminMenuEntity()
@@ -252,7 +258,7 @@ public class GenServiceImpl implements GenService {
         }
         var fileTs = readFile(apiTsPath);
         if (fileTs.contains("get" + config.businessName + "List:")) {
-            log.append("api ts already exists: ").append(config.businessNameVar).append("\n");
+            log.append("api ts already exists: ").append(apiTsPath).append("\n");
             return;
         }
         var templateStr = readFile(Path.of(config.templateDir, "api.ts.txt"));
@@ -261,7 +267,7 @@ public class GenServiceImpl implements GenService {
                 .matcher(fileTs)
                 .replaceAll(matchResult ->
                         matchResult.group(1).replaceAll("}\\s*$", "},")
-                                + tsStr + "\r\n})");
+                        + tsStr + "\r\n})");
         try {
             Files.writeString(apiTsPath, fileTs);
         } catch (IOException e) {
@@ -327,11 +333,11 @@ public class GenServiceImpl implements GenService {
         @Override
         public String toString() {
             return "packagePrefix: " + packagePrefix
-                    + "  moduleName: " + moduleName
-                    + "   businessName: " + businessName
-                    + "   tableName: " + tableName + "\n"
-                    + "codeDir: " + codeDir + "\n"
-                    + "templateDir: " + templateDir + "\n";
+                   + "  moduleName: " + moduleName
+                   + "   businessName: " + businessName
+                   + "   tableName: " + tableName + "\n"
+                   + "codeDir: " + codeDir + "\n"
+                   + "templateDir: " + templateDir + "\n";
         }
     }
 

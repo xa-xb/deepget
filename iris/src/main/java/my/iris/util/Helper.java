@@ -7,6 +7,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import my.iris.cache.SystemCache;
 import my.iris.config.AppConfig;
+import my.iris.service.email.EmailService;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
@@ -289,10 +290,10 @@ public record Helper() {
     }
 
     /**
-     * Renders a Thymeleaf template with the given variables.
+     * Renders a Thymeleaf templateName with the given variables.
      *
-     * @param template  the name of the template file (without suffix)
-     * @param variables the variables to inject into the template; may be {@code null}
+     * @param template  the name of the templateName file (without suffix)
+     * @param variables the variables to inject into the templateName; may be {@code null}
      * @return the rendered HTML/text as a {@code String}
      */
 
@@ -301,6 +302,9 @@ public record Helper() {
         Map<String, Object> map = new HashMap<>();
         map.put("siteName", systemCache.getSiteName());
         map.put("siteUrl", systemCache.getSiteUrl());
+        map.put("bodyStyle", EmailService.HTML_BODY_STYLE);
+        map.put("tableStyle", EmailService.HTML_TABLE_STYLE);
+
         var templateEngine = AppConfig.getContext().getBean(TemplateEngine.class);
         var context = new Context();
         if (variables != null && !variables.isEmpty()) {
